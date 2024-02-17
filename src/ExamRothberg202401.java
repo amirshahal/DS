@@ -215,7 +215,6 @@ public class ExamRothberg202401 {
         q1.insert(4);
         q1.insert(5);
         q1.insert(6);
-        
         q2.insert(5);
         q2.insert(7);
 
