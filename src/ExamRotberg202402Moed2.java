@@ -18,7 +18,7 @@ public class ExamRotberg202402Moed2 {
         System.out.println(lst);
     }
 
-    public static void mergeToQ(Queue q, Node lst) {
+    public static void mergeToQ(Queue<Integer> q, Node<Integer> lst) {
         // insert a list item on every other q item resulting with:
         // Q: item from Q, item from List, item from Q, item from List, etc.
         // In case list is shorter or equal in length to Q, we are done.
@@ -39,22 +39,22 @@ public class ExamRotberg202402Moed2 {
         }
     }
 
-    public static void mergeToList(Queue q, Node lst) {
+    public static void mergeToList(Queue<Integer> q, Node<Integer> lst) {
         // insert a Q item on every other list item resulting with:
         // List: item from List, item from Q, item from List, item from Q, item from List, etc.
         // In case Q is shorter or equal in length to List, we are done.
         // In case Q is longer than List, add the remaining Q items at the end of the List.
 
-        Node n1;
+        Node<Integer> n1;
         while(lst.hasNext() && !q.isEmpty()) {
-            n1 = new Node(q.remove(), lst.getNext());
+            n1 = new Node<Integer>(q.remove(), lst.getNext());
             lst.setNext(n1);
             lst = lst.getNext().getNext();
         }
 
         // Add the remaining q items at the end of the list
         while (!q.isEmpty()) {
-            n1 = new Node(q.remove(), lst.getNext());
+            n1 = new Node<Integer>(q.remove(), lst.getNext());
             lst.setNext(n1);
             lst = lst.getNext();
         }
@@ -67,7 +67,7 @@ public class ExamRotberg202402Moed2 {
                         new Node<Integer>(4,
                                 new Node<Integer>(9))));
 
-        Queue q = new Queue<Integer>();
+        Queue<Integer> q = new Queue<Integer>();
         q.insert(10);
         q.insert(20);
         //q.insert(30);
@@ -112,7 +112,7 @@ public class ExamRotberg202402Moed2 {
         }
 
         // נרד שורה לאחר האיבר האחרון ברשימה
-        System.out.println("");
+        System.out.println();
     }
 
     public static boolean validQ(Queue<Patient> q) {
@@ -161,7 +161,7 @@ public class ExamRotberg202402Moed2 {
         while (q.head() != null) {
             Patient p = q.remove();
 
-            if (lastWasFalse && p.isReserved()==false) {
+            if (lastWasFalse && !p.isReserved()) {
                 // in this case we want to move p to the end
                 shouldBeMovedToTheEnd.insert(p);
             }
@@ -191,7 +191,7 @@ public class ExamRotberg202402Moed2 {
         Patient p5 = new Patient("Esmeralda", 55, true);
         Patient p6 = new Patient("Flora", 44, true);
 
-        Queue patientQ = new Queue<Patient>();
+        Queue<Patient> patientQ = new Queue<Patient>();
         patientQ.insert(p1);
         patientQ.insert(p2);
         patientQ.insert(p3);
