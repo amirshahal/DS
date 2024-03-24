@@ -61,7 +61,7 @@ public class ExamRotberg202402Moed2 {
 
     }
 
-    public static void callMergeToQ() {
+    public static void callMergeToQMergeToList() {
         Node<Integer> lst = new Node<Integer>(1,
                 new Node<Integer>(2,
                         new Node<Integer>(4,
@@ -115,10 +115,105 @@ public class ExamRotberg202402Moed2 {
         System.out.println("");
     }
 
+    public static boolean validQ(Queue<Patient> q) {
+        // Q is valid has age in reverse sorted order ("ole")
+        // with NO two adjacent patients who did not reserve appointments
+        boolean rv = true; // so far no problems found :-)
+        int prevPatientAge = -1;
+        boolean prevPatientReserved = true;
+
+        // Add a marker for the end of Q
+        q.insert(null);
+
+        while(q.head() != null) {
+            Patient p = q.remove();
+
+            // p becomes last now
+            q.insert(p);
+
+            // check age condition
+            int pAge = p.getAge();
+            if (pAge <= prevPatientAge)
+                rv = false;
+
+            // check reserved condition
+            boolean pReserved = p.isReserved();
+            if (!pReserved && !prevPatientReserved)
+                rv = false;
+
+            // update values for next round
+            prevPatientAge = pAge;
+            prevPatientReserved = pReserved;
+        }
+
+        q.remove(); // take out the null
+        return rv;
+    }
+
+    public static void notReservedLast(Queue<Patient> q) {
+        boolean lastWasFalse = false;
+        Queue<Patient> shouldBeMovedToTheEnd = new Queue<Patient>();
+
+        // insert a marker for end of Q
+        q.insert(null);
+
+        // run until we hit the marker
+        while (q.head() != null) {
+            Patient p = q.remove();
+
+            if (lastWasFalse && p.isReserved()==false) {
+                // in this case we want to move p to the end
+                shouldBeMovedToTheEnd.insert(p);
+            }
+            else {
+                // put p back at the end
+                q.insert(p);
+            }
+
+            // keep record of the previous patient reserved status
+            lastWasFalse = !p.isReserved();
+        }
+
+        // remove the marker
+        q.remove();
+
+        // Add the "moved to the end patients"
+        while (!shouldBeMovedToTheEnd.isEmpty()) {
+            q.insert(shouldBeMovedToTheEnd.remove());
+        }
+    }
+
+    public static void testQ5() {
+        Patient p1 = new Patient("Alice", 88, true);
+        Patient p2 = new Patient("Bob", 80, false);
+        Patient p3 = new Patient("Charlie", 77, false);
+        Patient p4 = new Patient("David", 60, false);
+        Patient p5 = new Patient("Esmeralda", 55, true);
+        Patient p6 = new Patient("Flora", 44, true);
+
+        Queue patientQ = new Queue<Patient>();
+        patientQ.insert(p1);
+        patientQ.insert(p2);
+        patientQ.insert(p3);
+        patientQ.insert(p4);
+        patientQ.insert(p5);
+        patientQ.insert(p6);
+
+        System.out.println("------ BEFORE -----");
+        System.out.println(patientQ);
+
+        //System.out.println(validQ(patientQ));
+        notReservedLast(patientQ);
+
+        System.out.println("------ AFTER -----");
+        System.out.println(patientQ);
+    }
+
 
     public static void main(String[] arr) {
         // callSod();
-        callMergeToQ();
+        //callMergeToQMergeToList();
+        testQ5();
     }
 
 }
