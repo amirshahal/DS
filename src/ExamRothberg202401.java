@@ -115,6 +115,35 @@ public class ExamRothberg202401 {
         return res;
     }
 
+
+    public static int streak(Queue<Character> q) {
+        int c = 1;
+        boolean ok = true;
+        while(q.head()!=null && ok) {
+            char n = q.remove();
+            if (n == q.head())
+                c++;
+            else
+                ok = false;
+            q.insert(n);
+        }
+
+        return c;
+    }
+
+    public static boolean isUpED(Queue<Character> q) {
+        q.insert(null);
+        boolean Ok = true;
+        while (q.head() != null) {
+            int n1 = streak(q);
+            int n2 = streak(q);
+            if (n1 > n2)
+                Ok = false;
+        }
+        q.remove();
+        return Ok;
+    }
+
     // Q6
     // Go through the q and find sequences i.e. chars which repeat.
     // Whenever a new sequence starts:
@@ -219,33 +248,28 @@ public class ExamRothberg202401 {
         q2.insert(7);
 
         System.out.println(orderYS(q1, q2));
-
-         */
     }
     public static void testQ6() {
         Queue<Character> q = new Queue<Character>();
         q.insert('z');
-        q.insert('z');
-        q.insert('z');
+        //q.insert('z');
+        //q.insert('z');
         q.insert('b');
         q.insert('b');
         q.insert('k');
         q.insert('k');
         q.insert('k');
         q.insert('k');
-        //System.out.println(isUp(q));
-        fixUp(q);
-        System.out.println(q);
+        System.out.println(isUpED(q));
+        //fixUp(q);
+        //System.out.println(q);
     }
 
 
     public static void main(String[] arr) {
 
         // testQ4();
-        testQ5();
-        // testQ6();
+        //testQ5();
+        testQ6();
     }
-
-
-
 }

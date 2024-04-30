@@ -17,8 +17,10 @@ public class ExamRotberg202402 {
         Node<Integer> n3 = new Node<Integer>(3, n4);
         Node<Integer> n2 = new Node<Integer>(2, n3);
         Node<Integer> n = new Node<Integer>(1, n2);
-        //System.out.println(n1);
+
+        printList(n);
         sod(n);
+        printList(n);
     }
 
     public static int size(Node<Integer> n) {
@@ -110,8 +112,7 @@ public class ExamRotberg202402 {
         printList(spaces(n, 8));
     }
 
-
-    public static int zeros(int n) {
+    public static int zeroes(int n) {
         // מקרה של ספרת אחדות בלבד
         if (n < 10) {
             if (n == 0)
@@ -128,27 +129,61 @@ public class ExamRotberg202402 {
         else
             lastIsZero = 0;
         // נוסיף את התוצאה של שאר הספרות
-        return lastIsZero + zeros(n/10);
+        return lastIsZero + zeroes(n/10);
     }
 
+    public static Integer maxZerosID(Node<Integer> lst1, Node<Integer> lst2) {
+        int rv = 0;
+        if (lst1 != null) {
+            int ze1 = zeroes(lst1.getValue());
+            int ze2 = zeroes(lst2.getValue());
+            rv = maxZerosID(lst1.getNext(), lst2.getNext());
+            if (rv < ze1)
+                rv = ze1;
+            else if (rv < ze2)
+                rv = ze2;
+        }
+
+        return rv;
+
+    }
+
+
     public static Integer maxZeros(Node<Integer> lst1, Node<Integer> lst2) {
+        // Return max zeros in any number in lst1 or in lst2
+        // lst1 and lst2 have the same length
+
+        if (lst1 == null)
+            return 0;
+        else {
+            // Compare the number of zeroes in the two numbers at this level
+            int maxThisLevel = Math.max(zeroes(lst1.getValue()),
+                    zeroes(lst2.getValue()));
+
+            // Compare the winner with the winner of next levels.
+            return Math.max(maxThisLevel, maxZeros(lst1.getNext(), lst2.getNext()));
+        }
+    }
+
+
+    public static Integer maxZerosOriginal(Node<Integer> lst1, Node<Integer> lst2) {
         // Return the number of zeros in lst1 or in lst2 that has most zeros
         // lst1 and lst2 have the same length
 
         // מקרה של האיבר האחרון בשתי הרשימות
         if (!lst1.hasNext() && !lst2.hasNext()) {
-            int zeros1 = zeros(lst1.getValue());
-            int zeros2 = zeros(lst2.getValue());
+            int zeros1 = zeroes(lst1.getValue());
+            int zeros2 = zeroes(lst2.getValue());
             return (zeros1 > zeros2)? lst1.getValue() : lst2.getValue();
         }
         else {
             // מקרה של יותר מאיבר אחד בשתי הרשימות
             Integer num1 = lst1.getValue();
             Integer num2 = lst1.getValue();
-            Integer maxZerosRest = maxZeros(lst1.getNext(), lst2.getNext());
-            int zerosNum1 = zeros(num1);
-            int zerosNum2 = zeros(num2);
-            int zerosRest = zeros(maxZerosRest);
+            Integer maxZerosRest = maxZerosOriginal(lst1.getNext(), lst2.getNext());
+            int zerosNum1 = zeroes(num1);
+            int zerosNum2 = zeroes(num2);
+            int zerosRest = zeroes(maxZerosRest);
 
             // נבדוק את 3 המקרים הבאים:
             // 1. הכי הרבה אפסים במספר הנוכחי ברשימה הראשונה.
@@ -186,16 +221,17 @@ public class ExamRotberg202402 {
         Node<Integer> n2 = new Node<Integer>(2020200, n3);
         Node<Integer> n = new Node<Integer>(1, n2);
 
-        Node<Integer> m4 = new Node<Integer>(4010000);
+        Node<Integer> m4 = new Node<Integer>(401000);
         Node<Integer> m3 = new Node<Integer>(301, m4);
         Node<Integer> m2 = new Node<Integer>(20200, m3);
         Node<Integer> m = new Node<Integer>(1, m2);
 
+        //System.out.println(maxZerosID(n, m));
         System.out.println(maxZeros(n, m));
     }
 
     public static void main(String[] arr) {
-        // testQ4()
+        //testQ4();
         // testQ5();
         testQ6();
     }

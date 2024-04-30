@@ -41,6 +41,21 @@ public class BasicListQuestions {
         return rv;
     }
 
+    public static Node<Integer> putInOrderedListMS (Node<Integer> lst, int num) {
+    //הפונקציה מקבלת רשימה עולה של מספרים שלמים ומספר וצריכה להוסיף את המספר למקום שלו ברשימה
+    Node<Integer> p = lst;// יצרית רשימה מעתיקה
+    while (p != null)//בתנאי שלא הגענו לקצה הרשימה
+    {
+        if(p.getValue()<num && p.getNext().getValue()>num)
+        {
+            Node<Integer> t = new Node <Integer>(num);//הוספת החוליה לרשימה
+            t.setNext(p.getNext());
+            p.setNext(t);
+        }
+    }
+    return p;
+}
+
     public static Node<Integer> putInOrderedList(Node<Integer> lst, int num) {
         // נתון שהרשימה lst היא ממוינת מקטן לגדול. יש להכניס את num למקום הנכון ברשימה
         // במידה ו-num כבר נמצא, אין להכניס אותו שוב - כלומר לא צריך לעשות כלום
@@ -100,13 +115,13 @@ public class BasicListQuestions {
         //System.out.println(getSum(lst));
 
         printList(lst);
-        lst = putInOrderedList(lst, 0);
+        lst = putInOrderedListMS(lst, 0);
         printList(lst);
 
-        lst = putInOrderedList(lst, 40);
+        lst = putInOrderedListMS(lst, 40);
         printList(lst);
 
-        lst = putInOrderedList(lst, 25);
+        lst = putInOrderedListMS(lst, 25);
         printList(lst);
 
     }

@@ -11,11 +11,17 @@ public class ExamRotberg202402Moed2 {
 
     public static void callSod() {
         Node<Integer> lst = new Node<Integer>(1,
-                new Node<Integer>(2,
-                        new Node<Integer>(4,
-                                new Node<Integer>(10))));
-        sod(lst);
+                new Node<Integer>(4,
+                        new Node<Integer>(9,
+                                new Node<Integer>(12))));
+        //sod(lst);
+        stam(lst);
         System.out.println(lst);
+    }
+
+
+    public static void stam(Node<Integer> lst) {
+        lst = lst.getNext();
     }
 
     public static void mergeToQ(Queue<Integer> q, Node<Integer> lst) {
@@ -211,9 +217,9 @@ public class ExamRotberg202402Moed2 {
 
 
     public static void main(String[] arr) {
-        // callSod();
+        callSod();
         //callMergeToQMergeToList();
-        testQ5();
+        //testQ5();
     }
 
 }
