@@ -26,10 +26,7 @@ public class Node<T>
     {
         return (this.next != null);
     }
-    public void setValue(T value)
-    {
-        this.value = value;
-    }
+    public void setValue(T value)    { this.value = value; }
     public void setNext(Node<T> next)
     {
         this.next = next;
