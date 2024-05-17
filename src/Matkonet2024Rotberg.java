@@ -20,7 +20,7 @@ public class Matkonet2024Rotberg {
         }
     }
 
-    public static void printLinkedList(Node <int[]> n) {
+    public static void printLinkedListIntArray(Node <int[]> n) {
         while (n != null) {
             int[] arr = n.getValue();
             System.out.print("[");
@@ -29,6 +29,15 @@ public class Matkonet2024Rotberg {
             System.out.println("]");
             n = n.getNext();
         }
+    }
+
+    public static void printLinkedList(Node n) {
+        while (n != null) {
+            System.out.print(n.getValue() + " -> ");
+            n = n.getNext();
+        }
+
+        System.out.println("");
     }
 
     public static void run4a() {
@@ -50,6 +59,7 @@ public class Matkonet2024Rotberg {
         printLinkedList(t);
     }
 
+    // Question 7a
     public static boolean trio(Queue<String> q, int num)
     {
         int countShorterThanNum = 0;// num - מספר האיברים שקטנים מ
@@ -74,6 +84,7 @@ public class Matkonet2024Rotberg {
         return rv;
     }
 
+    // Question 7b
     public static boolean completeTrio(Queue<String> q)
     {
         while(!q.isEmpty())
@@ -131,11 +142,40 @@ public class Matkonet2024Rotberg {
                 return false;
             if(list.getValue().getIndex() != lastIndex + 1)
                 return false;
+
+            // update the values we keep for the next round
             lastColor = list.getValue().getColor();
             lastIndex = list.getValue().getIndex();
             list = list.getNext();
         }
         return true;
+    }
+
+    public static void combine_wrong(Node<Flag> list1, Node<Flag> list2) {
+        int i = 1;
+        while (list2 != null) {
+            if (list1.getValue().getIndex() == i) {
+                list1 = list1.getNext();
+            }
+
+            if (list2.getValue().getIndex() == i) {
+                // Problem #1: setNext get a Node and not a Flag.
+                // list1.setNext(list2.getValue());
+
+                // Problem #3. In this case list1 is already "beyond" list2
+                //      what we want is to link list2's head to the previous node in list1.
+                list1.setNext(list2);
+
+                // See problem #2 note
+                list2 = list2.getNext();
+            }
+
+            i++;
+
+            // Problem #2: you want to move list2 forward only if you used it
+            //list2 = list2.getNext();
+        }
+
     }
 
     // Question 6b
@@ -155,16 +195,46 @@ public class Matkonet2024Rotberg {
                 flags1.setNext(tmp); // make flags1->next point to tmp, i.e. now temp was combined to glags1
                 flags1 = tmp; // make flags1 point to the new item
             }
-            flags1 = flags1.getNext();
+            else
+                flags1 = flags1.getNext();
         }
     }
 
-    public static void main(String[] arr) {
-        int a;
-        a = 3;
-        run4a();
+    public static Node<Flag> buildFlagsList(int[] arr) {
+        if (arr.length == 0)
+            return null;
 
+        Flag f1 = new Flag("Blue", arr[0]);
+        Node<Flag> lst = new Node(f1);
+        Node<Flag> last = lst;
+
+        for (int i = 1; i < arr.length; i++) {
+            Flag f = new Flag("Blue", arr[i]);
+            Node<Flag> n = new Node(f);
+            last.setNext(n);
+            last = n;
+        }
+
+        return lst;
+    }
+
+    public static void run6() {
+        Node<Flag> lst1 = buildFlagsList(new int[]{1, 2, 6, 7});
+        printLinkedList(lst1);
+
+        Node<Flag> lst2 = buildFlagsList(new int[]{3, 4, 5, 8});
+        printLinkedList(lst2);
+
+        combine(lst1, lst2);
+        //combine_wrong(lst1, lst2);
+        printLinkedList(lst1);
+    }
+
+
+    public static void main(String[] arr) {
+        //run4a();
         //run4b();
+        run6();
     }
 
 }

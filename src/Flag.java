@@ -11,6 +11,11 @@ public class Flag {
         return color;
     }
 
+    public String toString() {
+        String rv = color + "," + index;
+        return rv;
+    }
+
     public int getIndex() {
         return index;
     }
