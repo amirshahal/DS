@@ -151,6 +151,45 @@ public class Matkonet2024Rotberg {
         return true;
     }
 
+    public static void combine_alternative(Node<Flag> list1, Node<Flag> list2) {
+        // This solution asumes the following:
+        // 1.list1 i not empty (given).
+        // 2. For every i there is a Node (i.e. all integers up till the end
+        //    of the combined chain are represented by flag).
+        int i = 1;
+        Node<Flag> list1prev = null;
+        while (list1 != null && list2 != null) {
+            if (list1.getValue().getIndex() == i) {
+                list1prev = list1;
+                list1 = list1.getNext();
+            }
+
+            else {
+                if (list2.getValue().getIndex() == i) {
+
+                    // we need to put list2's first node after list1prev (i.e. before list1)
+
+                    Node<Flag> list2next = list2.getNext();
+
+                    list2.setNext(list1);
+                    list1prev.setNext(list2);
+
+                    // update for next rounds
+                    list1prev =list2;
+                    list2 = list2next;
+                }
+            }
+
+            i++;
+
+        }
+
+        // if list2 is null we are done, otherwise add the rest of list2 after list1
+        if(list2 != null)
+            list1prev.setNext(list2);
+
+    }
+
     public static void combine_wrong(Node<Flag> list1, Node<Flag> list2) {
         int i = 1;
         while (list2 != null) {
@@ -225,8 +264,9 @@ public class Matkonet2024Rotberg {
         Node<Flag> lst2 = buildFlagsList(new int[]{3, 4, 5, 8});
         printLinkedList(lst2);
 
-        combine(lst1, lst2);
+        //combine(lst1, lst2);
         //combine_wrong(lst1, lst2);
+        combine_alternative(lst1, lst2);
         printLinkedList(lst1);
     }
 
